@@ -43,14 +43,12 @@ void calculator(const string &str)
 
 	for (i = 0; i < str.length(); ++i)
 	{
-		char ch = str[i];
-
-		if (isspace(ch))
+		if (isspace(str[i]))
 			continue;
-		else if (isdigit(ch))
-			operands.push_back(ch);
+		else if (isdigit(str[i]))
+			operands.push_back(str[i]);
 		else
-			operators.push_back(ch);
+			operators.push_back(str[i]);
 	}
 
 	consoleLog(stringifyVector(operands));
