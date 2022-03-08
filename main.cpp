@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <cctype>
-#include <typeinfo>
 
 using namespace std;
 
@@ -10,29 +9,25 @@ void consoleLog(const string &str)
     cout << str << endl;
 }
 
-template <typename VectorType>
-string stringifyVector(const VectorType &v)
+string stringifyVector(vector<char> &v)
 {
 	string stringify;
 
 	if (!v.empty())
 	{
 		short int i = 0;
-		string element;
 
 		stringify = "[";
-		for (auto e : v)
+		for (const auto &element : v)
 		{
-			if (typeid(e) == typeid(int))
-				element = to_string(e);
-			else if (typeid(e) == typeid(char))
-				element = string(1, e);
-
+			stringify += "\"";
 			stringify += element;
+			stringify += "\"";
 
 			if (i < v.size() - 1)
+			{
 				stringify += ", ";
-
+			}
 			++i;
 		}
 		stringify += "]";
@@ -42,7 +37,7 @@ string stringifyVector(const VectorType &v)
 
 void calculator(const string &str)
 {
-	vector <int> operands;
+	vector <char> operands;
 	vector <char> operators;
 	int i;
 
