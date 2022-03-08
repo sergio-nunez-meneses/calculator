@@ -51,15 +51,7 @@ void calculator(const string &str)
 		if (isspace(str[i]))
 			continue;
 		else if (isdigit(str[i]))
-		{
-			// Subtract ASCII character by '0' to get numeric value, and multiply it by 10 to shuffle digits to the left
-			int result = 0;
-
-			for (; isdigit(str[i]); ++i)
-				result = (result * 10) + (str[i] - '0');
-
-			operands.push_back(result);
-		}
+			operands.push_back(str[i]);
 		else
 			operators.push_back(str[i]);
 	}
