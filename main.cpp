@@ -7,10 +7,10 @@ using namespace std;
 
 void consoleLog(const string &str)
 {
-    cout << str << endl;
+	cout << str << endl;
 }
 
-template <typename VectorType>
+template<typename VectorType>
 string stringifyVector(const VectorType &v)
 {
 	string stringify;
@@ -21,7 +21,7 @@ string stringifyVector(const VectorType &v)
 		string element;
 
 		stringify = "[";
-		for (auto e : v)
+		for (auto e: v)
 		{
 			if (typeid(e) == typeid(int))
 				element = to_string(e);
@@ -40,10 +40,18 @@ string stringifyVector(const VectorType &v)
 	return stringify;
 }
 
+int solveOperation(int firstOperand, int secondOperand, char arithmeticOperator)
+{
+	if (arithmeticOperator == '+')
+		return firstOperand + secondOperand;
+	else
+		return 0;
+}
+
 void calculator(const string &str)
 {
-	vector <int> operands;
-	vector <char> operators;
+	vector<int> operands;
+	vector<char> operators;
 	int i;
 
 	for (i = 0; i < str.length(); ++i)
