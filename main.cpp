@@ -11,7 +11,7 @@ void consoleLog(const string &str)
 }
 
 template<typename VectorType>
-string stringifyVector(const VectorType &v)
+string stringifyVector(const VectorType &v, const string &delimiter)
 {
 	string stringify;
 
@@ -20,7 +20,6 @@ string stringifyVector(const VectorType &v)
 		short int i = 0;
 		string element;
 
-		stringify = "[";
 		for (auto e: v)
 		{
 			if (typeid(e) == typeid(int))
@@ -31,21 +30,12 @@ string stringifyVector(const VectorType &v)
 			stringify += element;
 
 			if (i < v.size() - 1)
-				stringify += ", ";
+				stringify += delimiter;
 
 			++i;
 		}
-		stringify += "]";
 	}
 	return stringify;
-}
-
-int solveOperation(int firstOperand, int secondOperand, char arithmeticOperator)
-{
-	if (arithmeticOperator == '+')
-		return firstOperand + secondOperand;
-	else
-		return 0;
 }
 
 void calculator(const string &str)
@@ -72,8 +62,8 @@ void calculator(const string &str)
 			operators.push_back(str[i]);
 	}
 
-	consoleLog(stringifyVector(operands));
-	consoleLog(stringifyVector(operators));
+	consoleLog(stringifyVector(operands, " "));
+	consoleLog(stringifyVector(operators, " "));
 }
 
 int main()
