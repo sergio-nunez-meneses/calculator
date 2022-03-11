@@ -25,7 +25,7 @@ string stringifyVariable(const VariableType &element)
 
 bool isValidOperator(char oper)
 {
-	vector<char> validOperators = {'*', '/', '+', '-'};
+	vector<char> validOperators = {'^', '*', '/', '+', '-'};
 
 	return find(validOperators.begin(), validOperators.end(), oper) != validOperators.end();
 }
@@ -35,6 +35,7 @@ int operatorPrecedence(char oper)
 	switch (oper)
 	{
 		case '^':
+			return 3;
 		case '*':
 		case '/':
 			return 2;
@@ -119,6 +120,7 @@ string calculator(const string &str)
 
 int main()
 {
-	consoleLog(calculator("3 + 4"));
+	// Expression taken from https://en.wikipedia.org/wiki/Shunting-yard_algorithm#Detailed_example
+	consoleLog(calculator("3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3"));
 	return 0;
 }
