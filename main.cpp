@@ -34,6 +34,7 @@ int operatorPrecedence(char oper)
 {
 	switch (oper)
 	{
+		case '^':
 		case '*':
 		case '/':
 			return 2;
