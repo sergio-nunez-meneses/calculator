@@ -86,7 +86,25 @@ void calculator(const string &str)
 				operators.erase(operators.begin());
 		}
 		else
-			operators.push_back(str[i]);
+			if (isValidOperator(str[i]))
+			{
+				if (!operators.empty() && operators.front() != '(')
+				{
+					if (operatorPrecedence(str[i]) > operatorPrecedence(operators.front()))
+						operators.insert(operators.begin(), str[i]);
+					else if (operatorPrecedence(str[i]) == operatorPrecedence(operators.front()))
+					{
+						reversedPolishNotation += stringifyVariable(operators.front());
+
+						operators.erase(operators.begin());
+						operators.insert(operators.begin(), str[i]);
+					}
+					else
+						operators.insert(operators.begin(), str[i]);
+				}
+				else
+					operators.insert(operators.begin(), str[i]);
+			}
 	}
 }
 
