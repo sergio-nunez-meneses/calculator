@@ -1,41 +1,12 @@
 #include <iostream>
 #include <vector>
 #include <cctype>
-#include <typeinfo>
 
 using namespace std;
 
 void consoleLog(const string &str)
 {
 	cout << str << endl;
-}
-
-template<typename VectorType>
-string stringifyVector(const VectorType &v, const string &delimiter)
-{
-	string stringify;
-
-	if (!v.empty())
-	{
-		short int i = 0;
-		string element;
-
-		for (auto e: v)
-		{
-			if (typeid(e) == typeid(int))
-				element = to_string(e);
-			else if (typeid(e) == typeid(char))
-				element = string(1, e);
-
-			stringify += element;
-
-			if (i < v.size() - 1)
-				stringify += delimiter;
-
-			++i;
-		}
-	}
-	return stringify;
 }
 
 void calculator(const string &str)
@@ -61,9 +32,6 @@ void calculator(const string &str)
 		else
 			operators.push_back(str[i]);
 	}
-
-	consoleLog(stringifyVector(operands, " "));
-	consoleLog(stringifyVector(operators, " "));
 }
 
 int main()
