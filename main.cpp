@@ -47,6 +47,22 @@ int operatorPrecedence(char oper)
 	}
 }
 
+string operatorAssociativity(const char &oper)
+{
+	switch (oper)
+	{
+		case '^':
+			return "right";
+		case '*':
+		case '/':
+		case '+':
+		case '-':
+			return "left";
+		default:
+			return "";
+	}
+}
+
 string calculator(const string &str)
 {
 	vector<int> operands;
@@ -95,9 +111,12 @@ string calculator(const string &str)
 						operators.insert(operators.begin(), str[i]);
 					else if (operatorPrecedence(str[i]) == operatorPrecedence(operators.front()))
 					{
-						reversedPolishNotation += stringifyVariable(operators.front());
+						if (operatorAssociativity(str[i]) != "right") {
+							reversedPolishNotation += stringifyVariable(operators.front());
 
-						operators.erase(operators.begin());
+							operators.erase(operators.begin());
+						}
+
 						operators.insert(operators.begin(), str[i]);
 					}
 					else
