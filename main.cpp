@@ -1,12 +1,48 @@
 #include <iostream>
 #include <vector>
 #include <cctype>
+#include <typeinfo>
 
 using namespace std;
 
 void consoleLog(const string &str)
 {
 	cout << str << endl;
+}
+
+template<typename VariableType>
+string stringifyVariable(const VariableType &element)
+{
+	string stringify;
+
+	if (typeid(element) == typeid(int))
+		stringify += to_string(element);
+	else if (typeid(element) == typeid(char))
+		stringify += string(1, element);
+
+	return stringify += " ";
+}
+
+bool isValidOperator(char oper)
+{
+	vector<char> validOperators = {'*', '/', '+', '-'};
+
+	return find(validOperators.begin(), validOperators.end(), oper) != validOperators.end();
+}
+
+int operatorPrecedence(char oper)
+{
+	switch (oper)
+	{
+		case '*':
+		case '/':
+			return 2;
+		case '+':
+		case '-':
+			return 1;
+		default:
+			return 0;
+	}
 }
 
 void calculator(const string &str)
