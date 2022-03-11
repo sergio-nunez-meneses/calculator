@@ -50,6 +50,9 @@ void calculator(const string &str)
 {
 	vector<int> operands;
 	vector<char> operators;
+
+	string reversedPolishNotation;
+
 	int i;
 
 	for (i = 0; i < str.length(); ++i)
@@ -65,9 +68,23 @@ void calculator(const string &str)
 				result = (result * 10) + (str[i] - '0');
 
 			operands.push_back(result);
+
+			reversedPolishNotation += stringifyVariable(result);
 		}
 		else if (str[i] == '(')
 			operators.insert(operators.begin(), str[i]);
+		else if (str[i] == ')')
+		{
+			for (; operators.front() != '('; ++i)
+			{
+				reversedPolishNotation += stringifyVariable(operators.front());
+
+				operators.erase(operators.begin());
+			}
+
+			if (operators.front() == '(')
+				operators.erase(operators.begin());
+		}
 		else
 			operators.push_back(str[i]);
 	}
