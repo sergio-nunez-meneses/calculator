@@ -46,7 +46,7 @@ int operatorPrecedence(char oper)
 	}
 }
 
-void calculator(const string &str)
+string calculator(const string &str)
 {
 	vector<int> operands;
 	vector<char> operators;
@@ -114,11 +114,11 @@ void calculator(const string &str)
 	operands.clear();
 	operators.clear();
 
-	consoleLog(reversedPolishNotation);
+	return reversedPolishNotation;
 }
 
 int main()
 {
-	calculator("3 + 4");
+	consoleLog(calculator("3 + 4"));
 	return 0;
 }
