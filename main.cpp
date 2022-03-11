@@ -66,6 +66,8 @@ void calculator(const string &str)
 
 			operands.push_back(result);
 		}
+		else if (str[i] == '(')
+			operators.insert(operators.begin(), str[i]);
 		else
 			operators.push_back(str[i]);
 	}
