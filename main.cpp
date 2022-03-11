@@ -10,48 +10,49 @@ void consoleLog(const string &str)
 	cout << str << endl;
 }
 
-template<typename VectorType>
-string stringifyVector(const VectorType &v)
+template<typename VariableType>
+string stringifyVariable(const VariableType &element)
 {
 	string stringify;
 
-	if (!v.empty())
-	{
-		short int i = 0;
-		string element;
+	if (typeid(element) == typeid(int))
+		stringify += to_string(element);
+	else if (typeid(element) == typeid(char))
+		stringify += string(1, element);
 
-		stringify = "[";
-		for (auto e: v)
-		{
-			if (typeid(e) == typeid(int))
-				element = to_string(e);
-			else if (typeid(e) == typeid(char))
-				element = string(1, e);
-
-			stringify += element;
-
-			if (i < v.size() - 1)
-				stringify += ", ";
-
-			++i;
-		}
-		stringify += "]";
-	}
-	return stringify;
+	return stringify += " ";
 }
 
-int solveOperation(int firstOperand, int secondOperand, char arithmeticOperator)
+bool isValidOperator(char oper)
 {
-	if (arithmeticOperator == '+')
-		return firstOperand + secondOperand;
-	else
-		return 0;
+	vector<char> validOperators = {'*', '/', '+', '-'};
+
+	return find(validOperators.begin(), validOperators.end(), oper) != validOperators.end();
 }
 
-void calculator(const string &str)
+int operatorPrecedence(char oper)
+{
+	switch (oper)
+	{
+		case '^':
+		case '*':
+		case '/':
+			return 2;
+		case '+':
+		case '-':
+			return 1;
+		default:
+			return 0;
+	}
+}
+
+string calculator(const string &str)
 {
 	vector<int> operands;
 	vector<char> operators;
+
+	string reversedPolishNotation;
+
 	int i;
 
 	for (i = 0; i < str.length(); ++i)
@@ -67,17 +68,57 @@ void calculator(const string &str)
 				result = (result * 10) + (str[i] - '0');
 
 			operands.push_back(result);
+
+			reversedPolishNotation += stringifyVariable(result);
+		}
+		else if (str[i] == '(')
+			operators.insert(operators.begin(), str[i]);
+		else if (str[i] == ')')
+		{
+			for (; operators.front() != '('; ++i)
+			{
+				reversedPolishNotation += stringifyVariable(operators.front());
+
+				operators.erase(operators.begin());
+			}
+
+			if (operators.front() == '(')
+				operators.erase(operators.begin());
 		}
 		else
-			operators.push_back(str[i]);
+			if (isValidOperator(str[i]))
+			{
+				if (!operators.empty() && operators.front() != '(')
+				{
+					if (operatorPrecedence(str[i]) > operatorPrecedence(operators.front()))
+						operators.insert(operators.begin(), str[i]);
+					else if (operatorPrecedence(str[i]) == operatorPrecedence(operators.front()))
+					{
+						reversedPolishNotation += stringifyVariable(operators.front());
+
+						operators.erase(operators.begin());
+						operators.insert(operators.begin(), str[i]);
+					}
+					else
+						operators.insert(operators.begin(), str[i]);
+				}
+				else
+					operators.insert(operators.begin(), str[i]);
+			}
 	}
 
-	consoleLog(stringifyVector(operands));
-	consoleLog(stringifyVector(operators));
+	if (!operators.empty())
+		for (i = 0; i < operators.size(); ++i)
+			reversedPolishNotation += stringifyVariable(operators[i]);
+
+	operands.clear();
+	operators.clear();
+
+	return reversedPolishNotation;
 }
 
 int main()
 {
-	calculator("3 + 4");
+	consoleLog(calculator("3 + 4"));
 	return 0;
 }
