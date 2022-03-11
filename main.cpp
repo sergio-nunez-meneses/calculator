@@ -106,6 +106,15 @@ void calculator(const string &str)
 					operators.insert(operators.begin(), str[i]);
 			}
 	}
+
+	if (!operators.empty())
+		for (i = 0; i < operators.size(); ++i)
+			reversedPolishNotation += stringifyVariable(operators[i]);
+
+	operands.clear();
+	operators.clear();
+
+	consoleLog(reversedPolishNotation);
 }
 
 int main()
