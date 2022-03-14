@@ -147,7 +147,13 @@ string infixNotationToReversePolishNotation(const string &str)
 
 int main()
 {
-	// Expression taken from https://en.wikipedia.org/wiki/Shunting-yard_algorithm#Detailed_example
-	consoleLog(infixNotationToReversePolishNotation("3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3"));
+	cout << "Enter an arithmetical expression, separating with whitespaces operands, operators and parentheses." << endl;
+	cout << "Example: 3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3" << endl;
+
+	string infixExpression;
+	getline(cin, infixExpression);
+
+	consoleLog("Reverse Polish Notation: " + infixNotationToReversePolishNotation(infixExpression));
+
 	return 0;
 }
