@@ -63,6 +63,16 @@ string operatorAssociativity(const char &oper)
 	}
 }
 
+void pushOperatorFront(vector<char> &v, const char &oper)
+{
+	v.insert(v.begin(), oper);
+}
+
+void popOperatorFront(vector<char> &v)
+{
+	v.erase(v.begin());
+}
+
 string calculator(const string &str)
 {
 	vector<int> operands;
@@ -89,40 +99,40 @@ string calculator(const string &str)
 			reversedPolishNotation += stringifyVariable(result);
 		}
 		else if (str[i] == '(')
-			operators.insert(operators.begin(), str[i]);
+			pushOperatorFront(operators, str[i]);
 		else if (str[i] == ')')
 		{
 			for (; operators.front() != '('; ++i)
 			{
 				reversedPolishNotation += stringifyVariable(operators.front());
 
-				operators.erase(operators.begin());
+				popOperatorFront(operators);
 			}
 
 			if (operators.front() == '(')
-				operators.erase(operators.begin());
+				popOperatorFront(operators);
 		}
-		else
-			if (isValidOperator(str[i]))
+		else if (isValidOperator(str[i]))
+		{
+			if (!operators.empty() && operators.front() != '(')
 			{
-				if (!operators.empty() && operators.front() != '(')
+				if (operatorPrecedence(str[i]) == operatorPrecedence(operators.front()))
 				{
-					if (operatorPrecedence(str[i]) == operatorPrecedence(operators.front()))
+					if (operatorAssociativity(str[i]) != "right")
 					{
-						if (operatorAssociativity(str[i]) != "right") {
-							reversedPolishNotation += stringifyVariable(operators.front());
+						reversedPolishNotation += stringifyVariable(operators.front());
 
-							operators.erase(operators.begin());
-						}
-
-						operators.insert(operators.begin(), str[i]);
+						popOperatorFront(operators);
 					}
-					else
-						operators.insert(operators.begin(), str[i]);
+
+					pushOperatorFront(operators, str[i]);
 				}
 				else
-					operators.insert(operators.begin(), str[i]);
+					pushOperatorFront(operators, str[i]);
 			}
+			else
+				pushOperatorFront(operators, str[i]);
+		}
 	}
 
 	if (!operators.empty())
