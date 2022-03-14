@@ -63,12 +63,22 @@ string operatorAssociativity(const char &oper)
 	}
 }
 
-string calculator(const string &str)
+void pushOperatorFront(vector<char> &v, const char &oper)
+{
+	v.insert(v.begin(), oper);
+}
+
+void popOperatorFront(vector<char> &v)
+{
+	v.erase(v.begin());
+}
+
+string infixNotationToReversePolishNotation(const string &str)
 {
 	vector<int> operands;
 	vector<char> operators;
 
-	string reversedPolishNotation;
+	string reversePolishNotation;
 
 	int i;
 
@@ -86,60 +96,64 @@ string calculator(const string &str)
 
 			operands.push_back(result);
 
-			reversedPolishNotation += stringifyVariable(result);
+			reversePolishNotation += stringifyVariable(result);
 		}
 		else if (str[i] == '(')
-			operators.insert(operators.begin(), str[i]);
+			pushOperatorFront(operators, str[i]);
 		else if (str[i] == ')')
 		{
 			for (; operators.front() != '('; ++i)
 			{
-				reversedPolishNotation += stringifyVariable(operators.front());
+				reversePolishNotation += stringifyVariable(operators.front());
 
-				operators.erase(operators.begin());
+				popOperatorFront(operators);
 			}
 
 			if (operators.front() == '(')
-				operators.erase(operators.begin());
+				popOperatorFront(operators);
 		}
-		else
-			if (isValidOperator(str[i]))
+		else if (isValidOperator(str[i]))
+		{
+			if (!operators.empty() && operators.front() != '(')
 			{
-				if (!operators.empty() && operators.front() != '(')
+				if (operatorPrecedence(str[i]) == operatorPrecedence(operators.front()))
 				{
-					if (operatorPrecedence(str[i]) > operatorPrecedence(operators.front()))
-						operators.insert(operators.begin(), str[i]);
-					else if (operatorPrecedence(str[i]) == operatorPrecedence(operators.front()))
+					if (operatorAssociativity(str[i]) != "right")
 					{
-						if (operatorAssociativity(str[i]) != "right") {
-							reversedPolishNotation += stringifyVariable(operators.front());
+						reversePolishNotation += stringifyVariable(operators.front());
 
-							operators.erase(operators.begin());
-						}
-
-						operators.insert(operators.begin(), str[i]);
+						popOperatorFront(operators);
 					}
-					else
-						operators.insert(operators.begin(), str[i]);
+
+					pushOperatorFront(operators, str[i]);
 				}
 				else
-					operators.insert(operators.begin(), str[i]);
+					pushOperatorFront(operators, str[i]);
 			}
+			else
+				pushOperatorFront(operators, str[i]);
+		}
 	}
 
 	if (!operators.empty())
 		for (i = 0; i < operators.size(); ++i)
-			reversedPolishNotation += stringifyVariable(operators[i]);
+			reversePolishNotation += stringifyVariable(operators[i]);
 
 	operands.clear();
 	operators.clear();
 
-	return reversedPolishNotation;
+	return reversePolishNotation;
 }
 
 int main()
 {
-	// Expression taken from https://en.wikipedia.org/wiki/Shunting-yard_algorithm#Detailed_example
-	consoleLog(calculator("3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3"));
+	cout << "Enter an arithmetical expression, separating with whitespaces operands, operators and parentheses." << endl;
+	cout << "Example: 3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3" << endl;
+
+	string infixExpression;
+	getline(cin, infixExpression);
+
+	consoleLog("Reverse Polish Notation: " + infixNotationToReversePolishNotation(infixExpression));
+
 	return 0;
 }
