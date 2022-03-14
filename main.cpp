@@ -107,9 +107,7 @@ string calculator(const string &str)
 			{
 				if (!operators.empty() && operators.front() != '(')
 				{
-					if (operatorPrecedence(str[i]) > operatorPrecedence(operators.front()))
-						operators.insert(operators.begin(), str[i]);
-					else if (operatorPrecedence(str[i]) == operatorPrecedence(operators.front()))
+					if (operatorPrecedence(str[i]) == operatorPrecedence(operators.front()))
 					{
 						if (operatorAssociativity(str[i]) != "right") {
 							reversedPolishNotation += stringifyVariable(operators.front());
