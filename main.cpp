@@ -73,7 +73,7 @@ void popOperatorFront(vector<char> &v)
 	v.erase(v.begin());
 }
 
-string calculator(const string &str)
+string infixNotationToReversePolishNotation(const string &str)
 {
 	vector<int> operands;
 	vector<char> operators;
@@ -148,6 +148,6 @@ string calculator(const string &str)
 int main()
 {
 	// Expression taken from https://en.wikipedia.org/wiki/Shunting-yard_algorithm#Detailed_example
-	consoleLog(calculator("3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3"));
+	consoleLog(infixNotationToReversePolishNotation("3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3"));
 	return 0;
 }
