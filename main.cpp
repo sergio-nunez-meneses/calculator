@@ -78,7 +78,7 @@ string calculator(const string &str)
 	vector<int> operands;
 	vector<char> operators;
 
-	string reversedPolishNotation;
+	string reversePolishNotation;
 
 	int i;
 
@@ -96,7 +96,7 @@ string calculator(const string &str)
 
 			operands.push_back(result);
 
-			reversedPolishNotation += stringifyVariable(result);
+			reversePolishNotation += stringifyVariable(result);
 		}
 		else if (str[i] == '(')
 			pushOperatorFront(operators, str[i]);
@@ -104,7 +104,7 @@ string calculator(const string &str)
 		{
 			for (; operators.front() != '('; ++i)
 			{
-				reversedPolishNotation += stringifyVariable(operators.front());
+				reversePolishNotation += stringifyVariable(operators.front());
 
 				popOperatorFront(operators);
 			}
@@ -120,7 +120,7 @@ string calculator(const string &str)
 				{
 					if (operatorAssociativity(str[i]) != "right")
 					{
-						reversedPolishNotation += stringifyVariable(operators.front());
+						reversePolishNotation += stringifyVariable(operators.front());
 
 						popOperatorFront(operators);
 					}
@@ -137,12 +137,12 @@ string calculator(const string &str)
 
 	if (!operators.empty())
 		for (i = 0; i < operators.size(); ++i)
-			reversedPolishNotation += stringifyVariable(operators[i]);
+			reversePolishNotation += stringifyVariable(operators[i]);
 
 	operands.clear();
 	operators.clear();
 
-	return reversedPolishNotation;
+	return reversePolishNotation;
 }
 
 int main()
