@@ -2,6 +2,7 @@
 #include <vector>
 #include <cctype>
 #include <typeinfo>
+#include <cmath>
 
 using namespace std;
 
@@ -73,9 +74,28 @@ void popOperatorFront(vector<char> &v)
 	v.erase(v.begin());
 }
 
+double solveExpression(double firstOperand, double secondOperand, char arithmeticOperator)
+{
+	switch (arithmeticOperator)
+	{
+		case '+':
+			return firstOperand + secondOperand;
+		case '-':
+			return firstOperand - secondOperand;
+		case '*':
+			return firstOperand * secondOperand;
+		case '/':
+			return firstOperand / secondOperand;
+		case '^':
+			return pow(firstOperand, secondOperand);
+		default:
+			return 0;
+	}
+}
+
 string infixNotationToReversePolishNotation(const string &str)
 {
-	vector<int> operands;
+	vector<double> operands;
 	vector<char> operators;
 
 	string reversePolishNotation;
