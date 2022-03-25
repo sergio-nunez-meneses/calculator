@@ -77,7 +77,7 @@ VectorType popFrontAndReturn(vector<VectorType> &v)
 
 	v.erase(v.begin());
 
-	if (typeid(element) == typeid(int))
+	if (typeid(element) == typeid(double))
 		return element;
 	else if (typeid(element) == typeid(char))
 		return static_cast<char>(element);
