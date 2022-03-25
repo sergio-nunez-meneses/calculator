@@ -70,9 +70,19 @@ void pushFront(vector<VectorType> &v, VectorType element)
 	v.insert(v.begin(), element);
 }
 
-void popOperatorFront(vector<char> &v)
+template<typename VectorType>
+VectorType popFrontAndReturn(vector<VectorType> &v)
 {
+	auto element = v.front();
+
 	v.erase(v.begin());
+
+	if (typeid(element) == typeid(int))
+		return element;
+	else if (typeid(element) == typeid(char))
+		return static_cast<char>(element);
+
+	return 0;
 }
 
 double solveExpression(double firstOperand, double secondOperand, char arithmeticOperator)
@@ -125,13 +135,13 @@ string infixNotationToReversePolishNotation(const string &str)
 		{
 			for (; operators.front() != '('; ++i)
 			{
-				reversePolishNotation += stringifyVariable(operators.front());
+				char oper = popFrontAndReturn(operators);
 
-				popOperatorFront(operators);
+				reversePolishNotation += stringifyVariable(oper);
 			}
 
 			if (operators.front() == '(')
-				popOperatorFront(operators);
+				popFrontAndReturn(operators);
 		}
 		else if (isValidOperator(str[i]))
 		{
@@ -141,9 +151,9 @@ string infixNotationToReversePolishNotation(const string &str)
 				{
 					if (operatorAssociativity(str[i]) != "right")
 					{
-						reversePolishNotation += stringifyVariable(operators.front());
+						char oper = popFrontAndReturn(operators);
 
-						popOperatorFront(operators);
+						reversePolishNotation += stringifyVariable(oper);
 					}
 
 					pushFront(operators, str[i]);
