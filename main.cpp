@@ -64,9 +64,10 @@ string operatorAssociativity(char oper)
 	}
 }
 
-void pushOperatorFront(vector<char> &v, const char &oper)
+template<typename VectorType>
+void pushFront(vector<VectorType> &v, VectorType element)
 {
-	v.insert(v.begin(), oper);
+	v.insert(v.begin(), element);
 }
 
 void popOperatorFront(vector<char> &v)
@@ -119,7 +120,7 @@ string infixNotationToReversePolishNotation(const string &str)
 			reversePolishNotation += stringifyVariable(result);
 		}
 		else if (str[i] == '(')
-			pushOperatorFront(operators, str[i]);
+			pushFront(operators, str[i]);
 		else if (str[i] == ')')
 		{
 			for (; operators.front() != '('; ++i)
@@ -145,13 +146,13 @@ string infixNotationToReversePolishNotation(const string &str)
 						popOperatorFront(operators);
 					}
 
-					pushOperatorFront(operators, str[i]);
+					pushFront(operators, str[i]);
 				}
 				else
-					pushOperatorFront(operators, str[i]);
+					pushFront(operators, str[i]);
 			}
 			else
-				pushOperatorFront(operators, str[i]);
+				pushFront(operators, str[i]);
 		}
 	}
 
