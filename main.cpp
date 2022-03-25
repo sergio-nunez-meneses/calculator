@@ -48,7 +48,7 @@ int operatorPrecedence(char oper)
 	}
 }
 
-string operatorAssociativity(const char &oper)
+string operatorAssociativity(char oper)
 {
 	switch (oper)
 	{
