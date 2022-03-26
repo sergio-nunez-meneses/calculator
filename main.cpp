@@ -16,7 +16,7 @@ string stringifyVariable(const VariableType &element)
 {
 	string stringify;
 
-	if (typeid(element) == typeid(int))
+	if (typeid(element) == typeid(double))
 		stringify += to_string(element);
 	else if (typeid(element) == typeid(char))
 		stringify += string(1, element);
@@ -65,7 +65,7 @@ string operatorAssociativity(char oper)
 }
 
 template<typename VectorType>
-void pushFront(vector<VectorType> &v, VectorType element)
+void pushFront(vector<VectorType> &v, const VectorType element)
 {
 	v.insert(v.begin(), element);
 }
@@ -85,9 +85,9 @@ VectorType popFrontAndReturn(vector<VectorType> &v)
 	return 0;
 }
 
-double solveExpression(double firstOperand, double secondOperand, char arithmeticOperator)
+double solveExpression(double firstOperand, double secondOperand, char oper)
 {
-	switch (arithmeticOperator)
+	switch (oper)
 	{
 		case '+':
 			return firstOperand + secondOperand;
@@ -120,12 +120,12 @@ string infixNotationToReversePolishNotation(const string &str)
 		else if (isdigit(str[i]))
 		{
 			// Subtract ASCII character by '0' to get numeric value, and multiply it by 10 to shuffle digits to the left
-			int result = 0;
+			double result = 0;
 
 			for (; isdigit(str[i]); ++i)
 				result = (result * 10) + (str[i] - '0');
 
-			operands.push_back(result);
+			pushFront(operands, result);
 
 			reversePolishNotation += stringifyVariable(result);
 		}
@@ -155,7 +155,6 @@ string infixNotationToReversePolishNotation(const string &str)
 
 						reversePolishNotation += stringifyVariable(oper);
 					}
-
 					pushFront(operators, str[i]);
 				}
 				else
@@ -166,12 +165,12 @@ string infixNotationToReversePolishNotation(const string &str)
 		}
 	}
 
-	if (!operators.empty())
-		for (i = 0; i < operators.size(); ++i)
-			reversePolishNotation += stringifyVariable(operators[i]);
+	for (int k = 0; !operators.empty(); ++k)
+	{
+		char oper = popFrontAndReturn(operators);
 
-	operands.clear();
-	operators.clear();
+		reversePolishNotation += stringifyVariable(oper);
+	}
 
 	return reversePolishNotation;
 }
