@@ -111,6 +111,7 @@ string infixNotationToReversePolishNotation(const string &str)
 
 	string reversePolishNotation;
 
+	double expressionResult;
 	int i;
 
 	for (i = 0; i < str.length(); ++i)
@@ -135,9 +136,15 @@ string infixNotationToReversePolishNotation(const string &str)
 		{
 			for (; operators.front() != '('; ++i)
 			{
-				char oper = popFrontAndReturn(operators);
+				double secondOperand = popFrontAndReturn(operands);
+				double firstOperand = popFrontAndReturn(operands);
+				char arithmeticOperator = popFrontAndReturn(operators);
 
-				reversePolishNotation += stringifyVariable(oper);
+				expressionResult = solveExpression(firstOperand, secondOperand, arithmeticOperator);
+
+				pushFront(operands, expressionResult);
+
+				reversePolishNotation += stringifyVariable(arithmeticOperator);
 			}
 
 			if (operators.front() == '(')
@@ -151,9 +158,18 @@ string infixNotationToReversePolishNotation(const string &str)
 				{
 					if (operatorAssociativity(str[i]) != "right")
 					{
-						char oper = popFrontAndReturn(operators);
+						for (int j = 0; !operators.empty(); ++j)
+						{
+							double secondOperand = popFrontAndReturn(operands);
+							double firstOperand = popFrontAndReturn(operands);
+							char arithmeticOperator = popFrontAndReturn(operators);
 
-						reversePolishNotation += stringifyVariable(oper);
+							expressionResult = solveExpression(firstOperand, secondOperand,arithmeticOperator);
+
+							pushFront(operands, expressionResult);
+
+							reversePolishNotation += stringifyVariable(arithmeticOperator);
+						}
 					}
 					pushFront(operators, str[i]);
 				}
@@ -167,10 +183,18 @@ string infixNotationToReversePolishNotation(const string &str)
 
 	for (int k = 0; !operators.empty(); ++k)
 	{
-		char oper = popFrontAndReturn(operators);
+		double secondOperand = popFrontAndReturn(operands);
+		double firstOperand = popFrontAndReturn(operands);
+		char arithmeticOperator = popFrontAndReturn(operators);
 
-		reversePolishNotation += stringifyVariable(oper);
+		expressionResult = solveExpression(firstOperand, secondOperand, arithmeticOperator);
+
+		pushFront(operands, expressionResult);
+
+		reversePolishNotation += stringifyVariable(arithmeticOperator);
 	}
+
+	consoleLog("Result: " + to_string(expressionResult));
 
 	return reversePolishNotation;
 }
