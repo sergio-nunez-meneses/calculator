@@ -108,8 +108,11 @@ double solveExpression(vector<double> &operands, char oper)
 {
 	double secondOperand = popFrontAndReturn(operands);
 	double firstOperand = popFrontAndReturn(operands);
+	double result = calculate(firstOperand, secondOperand, oper);
 
-	return calculate(firstOperand, secondOperand, oper);
+	pushFront(operands, result);
+
+	return result;
 }
 
 string infixNotationToReversePolishNotation(const string &str)
@@ -147,8 +150,6 @@ string infixNotationToReversePolishNotation(const string &str)
 				char arithmeticOperator = popFrontAndReturn(operators);
 				expressionResult = solveExpression(operands, arithmeticOperator);
 
-				pushFront(operands, expressionResult);
-
 				reversePolishNotation += stringifyVariable(arithmeticOperator);
 			}
 
@@ -168,8 +169,6 @@ string infixNotationToReversePolishNotation(const string &str)
 							char arithmeticOperator = popFrontAndReturn(operators);
 							expressionResult = solveExpression(operands, arithmeticOperator);
 
-							pushFront(operands, expressionResult);
-
 							reversePolishNotation += stringifyVariable(arithmeticOperator);
 						}
 					}
@@ -187,8 +186,6 @@ string infixNotationToReversePolishNotation(const string &str)
 	{
 		char arithmeticOperator = popFrontAndReturn(operators);
 		expressionResult = solveExpression(operands, arithmeticOperator);
-
-		pushFront(operands, expressionResult);
 
 		reversePolishNotation += stringifyVariable(arithmeticOperator);
 	}
