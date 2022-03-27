@@ -85,7 +85,7 @@ VectorType popFrontAndReturn(vector<VectorType> &v)
 	return 0;
 }
 
-double solveExpression(double firstOperand, double secondOperand, char oper)
+double calculate(double firstOperand, double secondOperand, char oper)
 {
 	switch (oper)
 	{
@@ -104,12 +104,12 @@ double solveExpression(double firstOperand, double secondOperand, char oper)
 	}
 }
 
-double calculate(vector<double> &operands, char oper)
+double solveExpression(vector<double> &operands, char oper)
 {
 	double secondOperand = popFrontAndReturn(operands);
 	double firstOperand = popFrontAndReturn(operands);
 
-	return solveExpression(firstOperand, secondOperand, oper);
+	return calculate(firstOperand, secondOperand, oper);
 }
 
 string infixNotationToReversePolishNotation(const string &str)
@@ -145,7 +145,7 @@ string infixNotationToReversePolishNotation(const string &str)
 			for (; operators.front() != '('; ++i)
 			{
 				char arithmeticOperator = popFrontAndReturn(operators);
-				expressionResult = calculate(operands, arithmeticOperator);
+				expressionResult = solveExpression(operands, arithmeticOperator);
 
 				pushFront(operands, expressionResult);
 
@@ -166,7 +166,7 @@ string infixNotationToReversePolishNotation(const string &str)
 						for (int j = 0; !operators.empty(); ++j)
 						{
 							char arithmeticOperator = popFrontAndReturn(operators);
-							expressionResult = calculate(operands, arithmeticOperator);
+							expressionResult = solveExpression(operands, arithmeticOperator);
 
 							pushFront(operands, expressionResult);
 
@@ -186,7 +186,7 @@ string infixNotationToReversePolishNotation(const string &str)
 	for (int k = 0; !operators.empty(); ++k)
 	{
 		char arithmeticOperator = popFrontAndReturn(operators);
-		expressionResult = calculate(operands, arithmeticOperator);
+		expressionResult = solveExpression(operands, arithmeticOperator);
 
 		pushFront(operands, expressionResult);
 
