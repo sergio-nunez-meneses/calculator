@@ -104,11 +104,12 @@ double calculate(double firstOperand, double secondOperand, char oper)
 	}
 }
 
-double solveExpression(vector<double> &operands, char oper)
+double solveExpression(vector<double> &operands, vector<char> &operators)
 {
 	double secondOperand = popFrontAndReturn(operands);
 	double firstOperand = popFrontAndReturn(operands);
-	double result = calculate(firstOperand, secondOperand, oper);
+	char arithmeticOperator = popFrontAndReturn(operators);
+	double result = calculate(firstOperand, secondOperand, arithmeticOperator);
 
 	pushFront(operands, result);
 
@@ -147,10 +148,9 @@ string infixNotationToReversePolishNotation(const string &str)
 		{
 			for (; operators.front() != '('; ++i)
 			{
-				char arithmeticOperator = popFrontAndReturn(operators);
-				expressionResult = solveExpression(operands, arithmeticOperator);
+				reversePolishNotation += stringifyVariable(operators.front());
 
-				reversePolishNotation += stringifyVariable(arithmeticOperator);
+				expressionResult = solveExpression(operands, operators);
 			}
 
 			if (operators.front() == '(')
@@ -166,10 +166,9 @@ string infixNotationToReversePolishNotation(const string &str)
 					{
 						for (int j = 0; !operators.empty(); ++j)
 						{
-							char arithmeticOperator = popFrontAndReturn(operators);
-							expressionResult = solveExpression(operands, arithmeticOperator);
+							reversePolishNotation += stringifyVariable(operators.front());
 
-							reversePolishNotation += stringifyVariable(arithmeticOperator);
+							expressionResult = solveExpression(operands, operators);
 						}
 					}
 					pushFront(operators, str[i]);
@@ -184,10 +183,9 @@ string infixNotationToReversePolishNotation(const string &str)
 
 	for (int k = 0; !operators.empty(); ++k)
 	{
-		char arithmeticOperator = popFrontAndReturn(operators);
-		expressionResult = solveExpression(operands, arithmeticOperator);
+		reversePolishNotation += stringifyVariable(operators.front());
 
-		reversePolishNotation += stringifyVariable(arithmeticOperator);
+		expressionResult = solveExpression(operands, operators);
 	}
 
 	consoleLog("Result: " + to_string(expressionResult));
