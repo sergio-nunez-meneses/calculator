@@ -197,7 +197,8 @@ vector<string> infixNotationToReversePolishNotation(const string &str)
 
 int main()
 {
-	cout << "Enter an arithmetical expression, separating with whitespaces operands, operators and parentheses." << endl;
+	cout << "Enter an arithmetical expression, separating with whitespaces operands, operators and parentheses."
+	     << endl;
 	cout << "Example: 3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3" << endl;
 
 	string infixExpression;
