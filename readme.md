@@ -1,4 +1,25 @@
-# [The shunting-yard algorithm in detal](https://en.wikipedia.org/wiki/Shunting-yard_algorithm#The_algorithm_in_detail)
+# [The shunting-yard algorithm](https://en.wikipedia.org/wiki/Shunting-yard_algorithm)
+
+Parses an arithmetical expression in [infix notation](https://en.wikipedia.org/wiki/Infix_notation), and returns it in 
+postfix notation or [Reverse Polish notation](https://en.wikipedia.org/wiki/Reverse_Polish_notation). The result 
+of the infix expression is also returned.
+
+Example:
+
+```
+Enter an arithmetical expression, separating with whitespaces operands, operators and parentheses:
+
+3 + 4 * ( 2 - 1 )
+
+Reverse Polish Notation: 3.000000 4.000000 2.000000 1.000000 - * + 
+Expression result: 7.000000
+```
+
+Supported arithmetic operations are exponentiation, multiplication, division, addition, and subtraction.
+
+Built to learn the basis of the C++ language.
+
+# [The shunting-yard algorithm in detail](https://en.wikipedia.org/wiki/Shunting-yard_algorithm#The_algorithm_in_detail)
 
 ```
 /* This implementation does not implement composite functions, functions with variable number of arguments, and unary operators. */
@@ -46,3 +67,8 @@ while there are tokens on the operator stack:
     {assert the operator on top of the stack is not a (left) parenthesis}
     pop the operator from the operator stack onto the output queue
 ```
+
+# TODO
+
+- Implement a [stack version](https://www.cplusplus.com/reference/stack/stack/)
+- Implement an object-oriented version
