@@ -144,7 +144,7 @@ vector<string> infixNotationToReversePolishNotation(const string &str)
 			pushFront(operators, str[i]);
 		else if (str[i] == ')')
 		{
-			for (; operators.front() != '('; ++i)
+			while (operators.front() != '(')
 			{
 				reversePolishNotation += stringifyVariable(operators.front());
 
@@ -158,11 +158,11 @@ vector<string> infixNotationToReversePolishNotation(const string &str)
 		{
 			if (!operators.empty() && operators.front() != '(')
 			{
-				if (operatorPrecedence(str[i]) == operatorPrecedence(operators.front()))
+				if (operatorPrecedence(str[i]) <= operatorPrecedence(operators.front()))
 				{
 					if (operatorAssociativity(str[i]) != "right")
 					{
-						for (int j = 0; !operators.empty(); ++j)
+						while (!operators.empty() && operators.front() != '(')
 						{
 							reversePolishNotation += stringifyVariable(operators.front());
 
@@ -179,7 +179,7 @@ vector<string> infixNotationToReversePolishNotation(const string &str)
 		}
 	}
 
-	for (int k = 0; !operators.empty(); ++k)
+	while (!operators.empty())
 	{
 		reversePolishNotation += stringifyVariable(operators.front());
 
