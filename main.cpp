@@ -12,16 +12,18 @@ void consoleLog(const string &str)
 }
 
 template<typename VariableType>
-string stringifyVariable(const VariableType &element)
+string stringifyVariable(const VariableType &element);
+
+template<>
+string stringifyVariable<double>(const double &element)
 {
-	string stringify;
+	return to_string(element) += " ";
+}
 
-	if (typeid(element) == typeid(double))
-		stringify += to_string(element);
-	else if (typeid(element) == typeid(char))
-		stringify += string(1, element);
-
-	return stringify += " ";
+template<>
+string stringifyVariable<char>(const char &element)
+{
+	return string(1, element) += " ";
 }
 
 bool isValidOperator(char oper)
