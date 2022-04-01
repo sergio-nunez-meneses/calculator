@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
-#include <cctype>
-#include <typeinfo>
+#include <algorithm>
 #include <cmath>
 
 using namespace std;
@@ -121,7 +120,7 @@ vector<string> infixNotationToReversePolishNotation(const string &str)
 
 	string reversePolishNotation;
 
-	double expressionResult;
+	double expressionResult = 0;
 	int i;
 
 	for (i = 0; i < str.length(); ++i)
@@ -135,6 +134,8 @@ vector<string> infixNotationToReversePolishNotation(const string &str)
 
 			for (; isdigit(str[i]); ++i)
 				result = (result * 10) + (str[i] - '0');
+
+			i--;
 
 			pushFront(operands, result);
 
