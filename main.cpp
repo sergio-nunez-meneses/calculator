@@ -37,13 +37,13 @@ int operatorPrecedence(char oper)
 	switch (oper)
 	{
 		case '^':
-			return 3;
+			return 4;
 		case '*':
 		case '/':
-			return 2;
+			return 3;
 		case '+':
 		case '-':
-			return 1;
+			return 2;
 		default:
 			return 0;
 	}
