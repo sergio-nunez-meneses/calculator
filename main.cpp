@@ -113,9 +113,8 @@ double solveExpression(vector<double> &operands, vector<char> &operators)
 	return result;
 }*/
 
-vector<string> infixNotationToReversePolishNotation(const string &str)
+string infixNotationToReversePolishNotation(const string &str)
 {
-	vector<string> returnData;
 	stack<double> operands;
 	stack<char>   operators;
 
@@ -190,9 +189,7 @@ vector<string> infixNotationToReversePolishNotation(const string &str)
 		}
 	}
 
-	returnData.push_back(reversePolishNotation);
-
-	return returnData;
+	return reversePolishNotation;
 }
 
 int main()
@@ -204,9 +201,8 @@ int main()
 	string infixExpression;
 	getline(cin, infixExpression);
 
-	vector<string> result = infixNotationToReversePolishNotation(infixExpression);
-
-	cout << "Reverse Polish Notation: " << result[0] << endl;
+	string result = infixNotationToReversePolishNotation(infixExpression);
+	cout << "Reverse Polish Notation: " << result << endl;
 
 	return 0;
 }
