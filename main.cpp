@@ -6,11 +6,6 @@
 
 using namespace std;
 
-// void consoleLog(const string &str)
-// {
-// 	cout << str << endl;
-// }
-
 template<typename VariableType>
 string stringifyVariable(const VariableType &element);
 
@@ -65,53 +60,6 @@ string operatorAssociativity(char oper)
 			return "";
 	}
 }
-
-/*template<typename VectorType>
-void pushFront(vector<VectorType> &v, const VectorType element)
-{
-	v.insert(v.begin(), element);
-}
-
-template<typename VectorType>
-VectorType popFrontAndReturn(vector<VectorType> &v)
-{
-	auto element = v.front();
-
-	v.erase(v.begin());
-
-	return element;
-}
-
-double calculate(double firstOperand, double secondOperand, char oper)
-{
-	switch (oper)
-	{
-		case '+':
-			return firstOperand + secondOperand;
-		case '-':
-			return firstOperand - secondOperand;
-		case '*':
-			return firstOperand * secondOperand;
-		case '/':
-			return firstOperand / secondOperand;
-		case '^':
-			return pow(firstOperand, secondOperand);
-		default:
-			return 0;
-	}
-}
-
-double solveExpression(vector<double> &operands, vector<char> &operators)
-{
-	double secondOperand      = popFrontAndReturn(operands);
-	double firstOperand       = popFrontAndReturn(operands);
-	char   arithmeticOperator = popFrontAndReturn(operators);
-	double result             = calculate(firstOperand, secondOperand, arithmeticOperator);
-
-	pushFront(operands, result);
-
-	return result;
-}*/
 
 string infixNotationToReversePolishNotation(const string &str)
 {
