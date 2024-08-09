@@ -21,16 +21,16 @@ string stringifyVariable<char>(const char &element)
 	return string(1, element) += " ";
 }
 
-bool isValidOperator(char oper)
+bool isValidOper(char t_oper)
 {
 	vector<char> validOperators = {'^', '*', '/', '+', '-'};
 
-	return find(validOperators.begin(), validOperators.end(), oper) != validOperators.end();
+	return find(validOperators.begin(), validOperators.end(), t_oper) != validOperators.end();
 }
 
-int operatorPrecedence(char oper)
+int operPrecedence(char t_oper)
 {
-	switch (oper)
+	switch (t_oper)
 	{
 		case '^':
 			return 4;
@@ -45,9 +45,9 @@ int operatorPrecedence(char oper)
 	}
 }
 
-string operatorAssociativity(char oper)
+string operAssociativity(char t_oper)
 {
-	switch (oper)
+	switch (t_oper)
 	{
 		case '^':
 			return "right";
@@ -61,56 +61,55 @@ string operatorAssociativity(char oper)
 	}
 }
 
-string infixNotationToReversePolishNotation(const string &str)
+string reversePolishNotation(const string &tokens)
 {
 	stack<double> operands;
 	stack<char>   operators;
 
-	string reversePolishNotation;
+	string output;
 
 	int i;
-
-	for (i = 0; i < str.length(); ++i)
+	for (i = 0; i < tokens.length(); ++i)
 	{
-		if (isspace(str[i]))
+		if (isspace(tokens[i]))
 			continue;
-		else if (isdigit(str[i]))
+		else if (isdigit(tokens[i]))
 		{
 			// Subtract ASCII character by '0' to get numeric value, and multiply it by 10 to shuffle digits to the left
 			double result = 0;
 
-			for (; isdigit(str[i]); ++i)
-				result = (result * 10) + (str[i] - '0');
+			for (; isdigit(tokens[i]); ++i)
+				result = (result * 10) + (tokens[i] - '0');
 			i--;
 
 			operands.push(result);
 
-			reversePolishNotation += stringifyVariable(result);
+			output += stringifyVariable(result);
 		}
-		else if (isValidOperator(str[i]))
+		else if (isValidOper(tokens[i]))
 		{
 			while (!operators.empty()
 			       && operators.top() != '('
-			       && (operatorPrecedence(operators.top()) > operatorPrecedence(str[i])
-			           || operatorPrecedence(operators.top()) == operatorPrecedence(str[i])
-			              && operatorAssociativity(str[i]) == "left"))
+			       && (operPrecedence(operators.top()) > operPrecedence(tokens[i])
+			           || operPrecedence(operators.top()) == operPrecedence(tokens[i])
+			              && operAssociativity(tokens[i]) == "left"))
 			{
-				reversePolishNotation += stringifyVariable(operators.top());
+				output += stringifyVariable(operators.top());
 
 				operators.pop();
 			}
 
-			operators.push(str[i]);
+			operators.push(tokens[i]);
 		}
-		else if (str[i] == '(')
-			operators.push(str[i]);
-		else if (str[i] == ')')
+		else if (tokens[i] == '(')
+			operators.push(tokens[i]);
+		else if (tokens[i] == ')')
 		{
 			while (operators.top() != '(')
 			{
 				if (!operators.empty())
 				{
-					reversePolishNotation += stringifyVariable(operators.top());
+					output += stringifyVariable(operators.top());
 
 					operators.pop();
 				}
@@ -120,7 +119,7 @@ string infixNotationToReversePolishNotation(const string &str)
 				operators.pop();
 			if (operators.top() == '%') // TODO: Check if operator is a function
 			{
-				reversePolishNotation += stringifyVariable(operators.top());
+				output += stringifyVariable(operators.top());
 
 				operators.pop();
 			}
@@ -131,13 +130,13 @@ string infixNotationToReversePolishNotation(const string &str)
 	{
 		if (operators.top() != '(')
 		{
-			reversePolishNotation += stringifyVariable(operators.top());
+			output += stringifyVariable(operators.top());
 
 			operators.pop();
 		}
 	}
 
-	return reversePolishNotation;
+	return output;
 }
 
 int main()
@@ -146,11 +145,11 @@ int main()
 	     << endl;
 	cout << "Example: 3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3" << endl;
 
-	string infixExpression;
-	getline(cin, infixExpression);
+	string input;
+	getline(cin, input);
 
-	string result = infixNotationToReversePolishNotation(infixExpression);
-	cout << "Reverse Polish Notation: " << result << endl;
+	string result = reversePolishNotation(input);
+	cout << "Expression in Reverse Polish Notation: " << result << endl;
 
 	return 0;
 }
