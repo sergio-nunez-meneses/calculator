@@ -8,9 +8,9 @@ using namespace std;
 
 bool isValidOper(char t_oper)
 {
-	vector<char> validOperators = {'^', '*', '/', '+', '-'};
+	vector<char> validOpers = {'^', '*', '/', '+', '-'};
 
-	return find(validOperators.begin(), validOperators.end(), t_oper) != validOperators.end();
+	return find(validOpers.begin(), validOpers.end(), t_oper) != validOpers.end();
 }
 
 int operPrecedence(char t_oper)
@@ -48,7 +48,7 @@ string operAssociativity(char t_oper)
 
 string reversePolishNotation(const string &tokens)
 {
-	stack<double> operands;
+	stack<double> operands; // TODO: Use for solving the expression
 	stack<char>   operators;
 
 	string output;
@@ -61,15 +61,15 @@ string reversePolishNotation(const string &tokens)
 		else if (isdigit(tokens[i]))
 		{
 			// Subtract ASCII character by '0' to get numeric value, and multiply it by 10 to shuffle digits to the left
-			double result = 0;
+			double operand = 0;
 
 			for (; isdigit(tokens[i]); ++i)
-				result = (result * 10) + (tokens[i] - '0');
+				operand = (operand * 10) + (tokens[i] - '0');
 			i--;
 
-			operands.push(result);
+			operands.push(operand);
 
-			output += to_string(result);
+			output += to_string(operand);
 			output += " ";
 
 		}
