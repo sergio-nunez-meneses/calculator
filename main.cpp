@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <cmath>
+#include <stack>
 
 using namespace std;
 
@@ -115,12 +116,12 @@ double solveExpression(vector<double> &operands, vector<char> &operators)
 vector<string> infixNotationToReversePolishNotation(const string &str)
 {
 	vector<string> returnData;
-	vector<double> operands;
-	vector<char> operators;
+	stack<double> operands;
+	stack<char> operators;
 
 	string reversePolishNotation;
 
-	double expressionResult = 0;
+	// double expressionResult = 0;
 	int i;
 
 	for (i = 0; i < str.length(); ++i)
@@ -137,58 +138,65 @@ vector<string> infixNotationToReversePolishNotation(const string &str)
 
 			i--;
 
-			pushFront(operands, result);
+			// pushFront(operands, result);
+			operands.push(result);
 
 			reversePolishNotation += stringifyVariable(result);
 		}
 		else if (str[i] == '(')
-			pushFront(operators, str[i]);
+			// pushFront(operators, str[i]);
+			operators.push(str[i]);
 		else if (str[i] == ')')
 		{
-			while (operators.front() != '(')
+			while (operators.top() != '(')
 			{
-				reversePolishNotation += stringifyVariable(operators.front());
+				reversePolishNotation += stringifyVariable(operators.top());
 
-				expressionResult = solveExpression(operands, operators);
+				// expressionResult = solveExpression(operands, operators);
 			}
 
-			if (operators.front() == '(')
-				popFrontAndReturn(operators);
+			if (operators.top() == '(')
+				// popFrontAndReturn(operators);
+				operators.pop();
 		}
 		else if (isValidOperator(str[i]))
 		{
-			if (!operators.empty() && operators.front() != '(')
+			if (!operators.empty() && operators.top() != '(')
 			{
-				if (operatorPrecedence(str[i]) <= operatorPrecedence(operators.front()))
+				if (operatorPrecedence(str[i]) <= operatorPrecedence(operators.top()))
 				{
 					if (operatorAssociativity(str[i]) != "right")
 					{
-						while (!operators.empty() && operators.front() != '(')
+						// TODO: Solve infinte loop
+						while (!operators.empty() && operators.top() != '(')
 						{
-							reversePolishNotation += stringifyVariable(operators.front());
+							reversePolishNotation += stringifyVariable(operators.top());
 
-							expressionResult = solveExpression(operands, operators);
+							// expressionResult = solveExpression(operands, operators);
 						}
 					}
-					pushFront(operators, str[i]);
+					// pushFront(operators, str[i]);
+					operators.push(str[i]);
 				}
 				else
-					pushFront(operators, str[i]);
+					// pushFront(operators, str[i]);
+					operators.push(str[i]);
 			}
 			else
-				pushFront(operators, str[i]);
+				// pushFront(operators, str[i]);
+				operators.push(str[i]);
 		}
 	}
 
 	while (!operators.empty())
 	{
-		reversePolishNotation += stringifyVariable(operators.front());
+		reversePolishNotation += stringifyVariable(operators.top());
 
-		expressionResult = solveExpression(operands, operators);
+		// expressionResult = solveExpression(operands, operators);
 	}
 
 	returnData.push_back(reversePolishNotation);
-	returnData.push_back(to_string(expressionResult));
+	// returnData.push_back(to_string(expressionResult));
 
 	return returnData;
 }
@@ -205,7 +213,7 @@ int main()
 	vector<string> result = infixNotationToReversePolishNotation(infixExpression);
 
 	consoleLog("Reverse Polish Notation: " + result[0]);
-	consoleLog("Expression result: " + result[1]);
+	// consoleLog("Expression result: " + result[1]);
 
 	return 0;
 }
