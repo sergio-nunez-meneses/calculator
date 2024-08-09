@@ -6,21 +6,6 @@
 
 using namespace std;
 
-template<typename VariableType>
-string stringifyVariable(const VariableType &element);
-
-template<>
-string stringifyVariable<double>(const double &element)
-{
-	return to_string(element) += " ";
-}
-
-template<>
-string stringifyVariable<char>(const char &element)
-{
-	return string(1, element) += " ";
-}
-
 bool isValidOper(char t_oper)
 {
 	vector<char> validOperators = {'^', '*', '/', '+', '-'};
@@ -84,7 +69,9 @@ string reversePolishNotation(const string &tokens)
 
 			operands.push(result);
 
-			output += stringifyVariable(result);
+			output += to_string(result);
+			output += " ";
+
 		}
 		else if (isValidOper(tokens[i]))
 		{
@@ -94,7 +81,8 @@ string reversePolishNotation(const string &tokens)
 			           || operPrecedence(operators.top()) == operPrecedence(tokens[i])
 			              && operAssociativity(tokens[i]) == "left"))
 			{
-				output += stringifyVariable(operators.top());
+				output += operators.top();
+				output += " ";
 
 				operators.pop();
 			}
@@ -109,7 +97,8 @@ string reversePolishNotation(const string &tokens)
 			{
 				if (!operators.empty())
 				{
-					output += stringifyVariable(operators.top());
+					output += operators.top();
+					output += " ";
 
 					operators.pop();
 				}
@@ -117,9 +106,11 @@ string reversePolishNotation(const string &tokens)
 
 			if (operators.top() == '(')
 				operators.pop();
+
 			if (operators.top() == '%') // TODO: Check if operator is a function
 			{
-				output += stringifyVariable(operators.top());
+				output += operators.top();
+				output += " ";
 
 				operators.pop();
 			}
@@ -130,12 +121,12 @@ string reversePolishNotation(const string &tokens)
 	{
 		if (operators.top() != '(')
 		{
-			output += stringifyVariable(operators.top());
+			output += operators.top();
+			output += " ";
 
 			operators.pop();
 		}
 	}
-
 	return output;
 }
 
