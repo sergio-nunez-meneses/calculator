@@ -1,8 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <cmath>
 #include <stack>
+#include <map>
 
 using namespace std;
 
@@ -13,37 +13,37 @@ bool isValidOper(char t_oper)
 	return find(validOpers.begin(), validOpers.end(), t_oper) != validOpers.end();
 }
 
-int operPrecedence(char t_oper)
+map<char, string> operInfo(char t_oper)
 {
-	switch (t_oper)
-	{
-		case '^':
-			return 4;
-		case '*':
-		case '/':
-			return 3;
-		case '+':
-		case '-':
-			return 2;
-		default:
-			return 0;
-	}
-}
+	map<char, string> op;
+	string            p;
+	string            a;
 
-string operAssociativity(char t_oper)
-{
 	switch (t_oper)
 	{
 		case '^':
-			return "right";
+			p = "4";
+			a = "right";
+			break;
 		case '*':
 		case '/':
+			p = "3";
+			a = "left";
+			break;
 		case '+':
 		case '-':
-			return "left";
+			p = "2";
+			a = "left";
+			break;
 		default:
-			return "";
+			p = "";
+			a = "";
 	}
+
+	op['p'] = p;
+	op['a'] = a;
+
+	return op;
 }
 
 string reversePolishNotation(const string &tokens)
@@ -75,11 +75,15 @@ string reversePolishNotation(const string &tokens)
 		}
 		else if (isValidOper(tokens[i]))
 		{
-			while (!operators.empty()
-			       && operators.top() != '('
-			       && (operPrecedence(operators.top()) > operPrecedence(tokens[i])
-			           || operPrecedence(operators.top()) == operPrecedence(tokens[i])
-			              && operAssociativity(tokens[i]) == "left"))
+			map<char, string> op1 = operInfo(tokens[i]);
+			map<char, string> op2;
+
+			if (!operators.empty())
+				op2 = operInfo(operators.top());
+
+			while (!operators.empty() && operators.top() != '('
+			       && (op2['p'] > op1['p'] || op2['p'] == op1['p']
+				   && op1['a'] == "left"))
 			{
 				output += operators.top();
 				output += " ";
