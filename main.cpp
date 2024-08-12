@@ -1,7 +1,8 @@
 #include <iostream>
-#include <vector>
 #include <algorithm>
+#include <vector>
 #include <stack>
+#include <deque>
 #include <map>
 
 using namespace std;
@@ -46,12 +47,20 @@ map<char, string> operInfo(char t_oper)
 	return op;
 }
 
+string buildOutput(const deque<string> &tokens)
+{
+	string output;
+
+	for (const string &token : tokens)
+		output += token + " ";
+
+	return output;
+}
+
 string reversePolishNotation(const string &tokens)
 {
-	stack<double> operands; // TODO: Use for solving the expression
 	stack<char>   operators;
-
-	string output;
+	deque<string> ordered_tokens;
 
 	int i;
 	for (i = 0; i < tokens.length(); ++i)
@@ -67,11 +76,7 @@ string reversePolishNotation(const string &tokens)
 				operand = (operand * 10) + (tokens[i] - '0');
 			i--;
 
-			operands.push(operand);
-
-			output += to_string(operand);
-			output += " ";
-
+			ordered_tokens.push_back(to_string(operand));
 		}
 		else if (isValidOper(tokens[i]))
 		{
@@ -83,10 +88,9 @@ string reversePolishNotation(const string &tokens)
 
 			while (!operators.empty() && operators.top() != '('
 			       && (op2['p'] > op1['p'] || op2['p'] == op1['p']
-				   && op1['a'] == "left"))
+			                                  && op1['a'] == "left"))
 			{
-				output += operators.top();
-				output += " ";
+				ordered_tokens.emplace_back(1, operators.top());
 
 				operators.pop();
 			}
@@ -101,8 +105,7 @@ string reversePolishNotation(const string &tokens)
 			{
 				if (!operators.empty())
 				{
-					output += operators.top();
-					output += " ";
+					ordered_tokens.emplace_back(1, operators.top());
 
 					operators.pop();
 				}
@@ -113,8 +116,7 @@ string reversePolishNotation(const string &tokens)
 
 			if (operators.top() == '%') // TODO: Check if operator is a function
 			{
-				output += operators.top();
-				output += " ";
+				ordered_tokens.emplace_back(1, operators.top());
 
 				operators.pop();
 			}
@@ -125,13 +127,12 @@ string reversePolishNotation(const string &tokens)
 	{
 		if (operators.top() != '(')
 		{
-			output += operators.top();
-			output += " ";
+			ordered_tokens.emplace_back(1, operators.top());
 
 			operators.pop();
 		}
 	}
-	return output;
+	return buildOutput(ordered_tokens);
 }
 
 int main()
