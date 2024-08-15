@@ -51,7 +51,7 @@ string buildOutput(const deque<string> &tokens)
 {
 	string output;
 
-	for (const string &token : tokens)
+	for (const string &token: tokens)
 		output += token + " ";
 
 	return output;
@@ -80,15 +80,10 @@ string reversePolishNotation(const string &tokens)
 		}
 		else if (isValidOper(tokens[i]))
 		{
-			map<char, string> op1 = operInfo(tokens[i]);
-			map<char, string> op2;
-
-			if (!operators.empty())
-				op2 = operInfo(operators.top());
-
 			while (!operators.empty() && operators.top() != '('
-			       && (op2['p'] > op1['p'] || op2['p'] == op1['p']
-			                                  && op1['a'] == "left"))
+			       && (operInfo(operators.top())['p'] > operInfo(tokens[i])['p']
+			           || operInfo(operators.top())['p'] == operInfo(tokens[i])['p']
+			              && operInfo(tokens[i])['a'] == "left"))
 			{
 				ordered_tokens.emplace_back(1, operators.top());
 
