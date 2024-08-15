@@ -24,14 +24,29 @@ private:
 	void convert(const string &tokens);
 };
 
-bool isValidOper(char t_oper)
+ReversePolishNotation::ReversePolishNotation(string &input)
+{
+	this->convert(input);
+}
+
+string ReversePolishNotation::display()
+{
+	string output;
+
+	for (const string &token: this->ordered_tokens)
+		output += token + " ";
+
+	return output;
+}
+
+bool ReversePolishNotation::isValidOper(char t_oper)
 {
 	vector<char> validOpers = {'^', '*', '/', '+', '-'};
 
 	return find(validOpers.begin(), validOpers.end(), t_oper) != validOpers.end();
 }
 
-map<char, string> operInfo(char t_oper)
+map<char, string> ReversePolishNotation::operInfo(char t_oper)
 {
 	map<char, string> op;
 	string            p;
@@ -64,20 +79,9 @@ map<char, string> operInfo(char t_oper)
 	return op;
 }
 
-string buildOutput(const deque<string> &tokens)
+void ReversePolishNotation::convert(const string &tokens)
 {
-	string output;
-
-	for (const string &token: tokens)
-		output += token + " ";
-
-	return output;
-}
-
-string reversePolishNotation(const string &tokens)
-{
-	stack<char>   operators;
-	deque<string> ordered_tokens;
+	stack<char> operators;
 
 	int i;
 	for (i = 0; i < tokens.length(); ++i)
@@ -93,7 +97,7 @@ string reversePolishNotation(const string &tokens)
 				operand = (operand * 10) + (tokens[i] - '0');
 			i--;
 
-			ordered_tokens.push_back(to_string(operand));
+			this->ordered_tokens.push_back(to_string(operand));
 		}
 		else if (isValidOper(tokens[i]))
 		{
@@ -102,7 +106,7 @@ string reversePolishNotation(const string &tokens)
 			           || operInfo(operators.top())['p'] == operInfo(tokens[i])['p']
 			              && operInfo(tokens[i])['a'] == "left"))
 			{
-				ordered_tokens.emplace_back(1, operators.top());
+				this->ordered_tokens.emplace_back(1, operators.top());
 
 				operators.pop();
 			}
@@ -117,7 +121,7 @@ string reversePolishNotation(const string &tokens)
 			{
 				if (!operators.empty())
 				{
-					ordered_tokens.emplace_back(1, operators.top());
+					this->ordered_tokens.emplace_back(1, operators.top());
 
 					operators.pop();
 				}
@@ -128,7 +132,7 @@ string reversePolishNotation(const string &tokens)
 
 			if (operators.top() == '%') // TODO: Check if operator is a function
 			{
-				ordered_tokens.emplace_back(1, operators.top());
+				this->ordered_tokens.emplace_back(1, operators.top());
 
 				operators.pop();
 			}
@@ -139,12 +143,11 @@ string reversePolishNotation(const string &tokens)
 	{
 		if (operators.top() != '(')
 		{
-			ordered_tokens.emplace_back(1, operators.top());
+			this->ordered_tokens.emplace_back(1, operators.top());
 
 			operators.pop();
 		}
 	}
-	return buildOutput(ordered_tokens);
 }
 
 int main()
@@ -156,8 +159,8 @@ int main()
 	string input;
 	getline(cin, input);
 
-	string result = reversePolishNotation(input);
-	cout << "Expression in Reverse Polish Notation: " << result << endl;
+	ReversePolishNotation rpn(input);
+	cout << "Expression in Reverse Polish Notation: " << rpn.display() << endl;
 
 	return 0;
 }
