@@ -10,10 +10,18 @@ int main()
 	cout << "Example: 3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3" << endl;
 
 	string input;
-	getline(cin, input);
 
-	ReversePolishNotation rpn(input);
-	cout << "Expression in Reverse Polish Notation: " << rpn.display() << endl;
+	while (getline(cin, input))
+	{
+		if (!input.empty())
+		{
+			ReversePolishNotation rpn(input);
+			cout << "Expression in Reverse Polish Notation: " << rpn.display() << endl;
+			break;
+		}
+		else
+			cout << "Please, enter an arithmetical expression: " << endl;
+	}
 
 	return 0;
 }
