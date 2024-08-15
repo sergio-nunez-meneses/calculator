@@ -63,5 +63,4 @@ while there are tokens on the operator stack:
 ```
 
 # TODO
-- Implement an object-oriented version
 - Return the result of the expression.
