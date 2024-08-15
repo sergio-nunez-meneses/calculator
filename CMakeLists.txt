@@ -3,4 +3,6 @@ project(Calculator)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Calculator main.cpp)
+add_executable(Calculator main.cpp
+        ReversePolishNotation.h
+        ReversePolishNotation.cpp)
